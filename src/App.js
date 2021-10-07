@@ -111,8 +111,7 @@ class App extends Component {
 export default App;
 // ---------------------------------------------------
 // использовать именованные импорты и экспорты
-// import {Button}
-// export {Button}
+// import {Button} export {Button}
 
 // не нужно распылять пропсы
 
