@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Title from './components/Title';
 import ContactForm from './components/ContactForm';
 import Filter from './components/Filter';
+import filterContacts from './utils/filter-contact';
 import ContactList from './components/ContactList';
 
 import './App.scss';
@@ -34,9 +35,13 @@ class App extends Component {
     if (contacts) {
       this.setState({ contacts: contacts });
     }
+
+    // this.setState({ contacts: contacts ?? this.state.contacts });
   }
 
   addContact = ({ name, number }) => {
+    // addContact = (contact) => {
+
     const { contacts } = this.state;
     const contact = {
       id: uuidv4(),
@@ -48,18 +53,18 @@ class App extends Component {
       ? alert(`${name} is already in contacts.`)
       : //   alert(`${contact.name} is already in contacts.`);
         this.setState(prevState => ({
-          contacts: [contact, ...prevState.contacts],
-          // contacts: [...prevState.contacts, contact],
+          contacts: [...prevState.contacts, contact],
+          // contacts: [...prevState.contacts,  id: uuidv4(), ...contact],
         }));
   };
 
-  deleteContact = id => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== id),
-    }));
+  handleDeleteContact = id => {
+    this.setState({
+      contacts: this.state.contacts.filter(contact => contact.id !== id),
+    });
   };
 
-  changeFilter = e => {
+  handleChangeFilter = e => {
     this.setState({ filter: e.currentTarget.value });
     // this.setState({ filter: e.target.value });
   };
@@ -77,7 +82,12 @@ class App extends Component {
 
   render() {
     const { filter } = this.state;
-    const { addContact, changeFilter, deleteContact, visibleContacts } = this;
+    const {
+      addContact,
+      handleChangeFilter,
+      handleDeleteContact,
+      visibleContacts,
+    } = this;
     // const visibleContacts = this.getVisibleContact();
 
     return (
@@ -88,10 +98,10 @@ class App extends Component {
         <ContactForm onSubmit={addContact} />
 
         <Title title="Contacts" />
-        <Filter value={filter} onChange={changeFilter} />
+        <Filter value={filter} onChange={handleChangeFilter} />
         <ContactList
           visibleContacts={visibleContacts}
-          onDeleteContact={deleteContact}
+          onDeleteContact={handleDeleteContact}
         />
       </div>
     );
@@ -125,3 +135,5 @@ export default App;
 // коллбек - функция отложенного вызова, передать ссылку на функцию
 // onClick(this.setState(index)) - при клике произойдет результат выполнения/вызова этой функции(undefined), но не вызовется сама функция! не коллбек.
 // onClick(() => {return this.setState(index)}) - ссылка на функцию, не вызывается. вызовется только тогда, когда по кнопке кликнут! коллбек.
+
+// -save сохраняет в dep

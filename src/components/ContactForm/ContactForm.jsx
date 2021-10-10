@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import s from './ContactForm.module.scss';
 
-class Form extends Component {
+class ContactForm extends Component {
   // в форме стейт нужен только при сабмите, поэтому храним в компоненте формы, а при сабмите отдаем на верх
   state = {
     name: '',
@@ -9,9 +9,11 @@ class Form extends Component {
   };
 
   // для всех инпутов ввод данных
-  handleInputChange = e => {
+  handleInputChange = ({ currentTarget: { name, value } }) => {
+    // handleInputChange = e => {
+
     // паттерн для инпутов у которых есть name and value, подходит для радиокнопок, но не чекбоксов
-    const { name, value } = e.currentTarget;
+    // const { name, value } = e.currentTarget;
 
     // вычисляемые свойства объектов
     this.setState({ [name]: value });
@@ -23,6 +25,7 @@ class Form extends Component {
     this.props.onSubmit(this.state);
 
     this.reset();
+    // e.currentTarget.reset(); //получить ссылку на форму и очистить методом от реакта
   };
 
   reset = () => {
@@ -80,4 +83,4 @@ class Form extends Component {
   }
 }
 
-export default Form;
+export default ContactForm;
